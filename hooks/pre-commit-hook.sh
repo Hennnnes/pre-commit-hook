@@ -18,10 +18,17 @@ if git commit -v --dry-run | grep '<f:debug>' >/dev/null 2>&1
 	  exit 3
 fi
 
+if git commit -v --dry-run | grep 'debug' >/dev/null 2>&1
+	then
+	  echo "Remove the --> debug <-- string and try again."
+	  exit 4
+fi
+
+
 if git commit -v --dry-run | grep 'var_dump' >/dev/null 2>&1
 	then
 	  echo "Remove the --> var_dump <-- string and try again."
-	  exit 3
+	  exit 5
 fi
 
 exit 0
