@@ -1,19 +1,27 @@
-# pre-commit.sh
-git stash -q --keep-index
+#!/bin/sh
 
-# Test prospective commit
+if git commit -v --dry-run | grep 'console.log' >/dev/null 2>&1
+	then
+	  echo "Remove the --> console.log <-- string and try again."
+	  exit 1
+fi
 
-# Test for console.log
-FILES_PATTERN='\.(js)(\..+)?$'
-FORBIDDEN='console.log'
-git diff --cached --name-only | \
+if git commit -v --dry-run | grep 'test' >/dev/null 2>&1
+	then
+	  echo "Remove the --> test <-- string and try again."
+	  exit 2
+fi
 
-grep -E $FILES_PATTERN | \
+if git commit -v --dry-run | grep '<f:debug>' >/dev/null 2>&1
+	then
+	  echo "Remove the --> <f:debug> <-- string and try again."
+	  exit 3
+fi
 
-GREP_COLOR='4;5;37;41' xargs grep --color --with-filename -n $FORBIDDEN && echo 'COMMIT REJECTED Found "$FORBIDDEN" references. Please remove them before commiting'
+if git commit -v --dry-run | grep 'var_dump' >/dev/null 2>&1
+	then
+	  echo "Remove the --> var_dump <-- string and try again."
+	  exit 3
+fi
 
-# undo stash
-git stash pop -q
-
-# stop commit
-&& exit 1
+exit 0
