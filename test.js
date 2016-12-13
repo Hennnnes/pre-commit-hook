@@ -1,1 +1,1 @@
-<f:debug>a
+ <f:debug>
